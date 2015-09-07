@@ -1,26 +1,28 @@
 
 
-# Function to get page source
+# Function to get page source from link
 def get_page(url):
     try:
         import urllib
         return urllib.urlopen(url).read()
     except:
         return ''
-# To iterate over the links.
+    
+# Function to iterate over all the links.
 def print_all_links(page):
     while True:
-        url, endpos = get_next_target(page)
+        url, endpos = get_next_target(page) #Collect end posotion of page to iterate
         if url:
             print url
             page = page[endpos:]
         else:
             break
-# To collect all url.
+        
+# Function Tt collect all url.
 def get_next_target(s):
     start_link = s.find('<a href=')
     if start_link == -1:
-        return None,0
+        return None,0 # if NO link found return 0
     start_quote = s.find('"', start_link)
     end_quote = s.find ('"', start_quote + 1)
     url = s[start_quote + 1 : end_quote]
