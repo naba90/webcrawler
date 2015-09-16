@@ -1,2 +1,2 @@
 # webcrawler
- Building a Web Crawler using python.
+ Building a basic Web Crawler using python.
