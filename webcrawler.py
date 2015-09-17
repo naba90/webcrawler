@@ -51,9 +51,9 @@ def crawl_web(seed, max_dept):
     next_dept = []
     dept = 0
     while to_crawl and dept <= max_dept:  # limits the max dept in a particular link to be crawled.
-        link = to_crawl.pop()  # Dept first algorithm
-        # link = to_crawl[0]
-        # to_crawl.remove(link)
+        # link = to_crawl.pop()  # Dept first algorithm
+        link = to_crawl[0]
+        to_crawl.remove(link)
         if link not in crawled:
             # new_links = get_all_links(get_page(link))
             # print "I am at newlinks\n"
@@ -69,5 +69,5 @@ def crawl_web(seed, max_dept):
 
 
 # links = get_all_links(get_page("https://www.udacity.com/cs101x/index.html"))
-print crawl_web("http://www.murtazachunia.com/index.html", 2)
-# print crawl_web("https://www.udacity.com/cs101x/index.html", 10)
+# print crawl_web("http://www.murtazachunia.com/index.html", 2)
+print crawl_web("https://www.udacity.com/cs101x/index.html", 1)
