@@ -1,7 +1,7 @@
 #! /usr/bin/python2.7.8
 
 # Function to get page source from link
-def  et_page(url):
+def get_page(url):
     try:
         import urllib
         return urllib.urlopen(url).read()
@@ -41,14 +41,16 @@ def get_all_links(page):
     return links
 
 
-def crawl_web(seed, max_pages):
+def crawl_web(seed, max_dept):
     """
 
     :rtype : list.
     """
     to_crawl = [seed]
     crawled = []
-    while to_crawl and len(crawled) < max_pages:  # max_pages limits the max pages to crawled.
+    next_dept = []
+    dept = 0
+    while to_crawl and dept <= max_dept:  # limits the max dept in a particular link to be crawled.
         link = to_crawl.pop()  # Dept first algorithm
         # link = to_crawl[0]
         # to_crawl.remove(link)
@@ -56,13 +58,16 @@ def crawl_web(seed, max_pages):
             # new_links = get_all_links(get_page(link))
             # print "I am at newlinks\n"
             # print new_links
-            union(to_crawl, get_all_links(get_page(link)))  # To avoid having duplication in tocrawl
+            union(next_dept, get_all_links(get_page(link)))  # To add links into next_dept w/o duplication
             # to_crawl = union(to_crawl, new_links)
             # to_crawl.append(get_all_links(get_page(link)))
             crawled.append(link)
+        if not to_crawl:  # This updates to_crawl with links in next_dept
+            to_crawl, next_dept = next_dept, []
+            dept += 1
     return crawled
 
 
 # links = get_all_links(get_page("https://www.udacity.com/cs101x/index.html"))
-print crawl_web("http://www.murtazachunia.com/index.html", 5)
+print crawl_web("http://www.murtazachunia.com/index.html", 2)
 # print crawl_web("https://www.udacity.com/cs101x/index.html", 10)
