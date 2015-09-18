@@ -60,7 +60,6 @@ def crawl_web(seed, max_dept):
             # print new_links
             union(next_dept, get_all_links(get_page(link)))  # To add links into next_dept w/o duplication
             # to_crawl = union(to_crawl, new_links)
-            # to_crawl.append(get_all_links(get_page(link)))
             crawled.append(link)
         if not to_crawl:  # This updates to_crawl with links in next_dept
             to_crawl, next_dept = next_dept, []
