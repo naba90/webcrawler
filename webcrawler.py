@@ -48,21 +48,21 @@ def get_all_links(page):
 def crawl_web(seed):
     """
 
-    :rtype : list.
+    :rtype : Dictionary.
     """
     to_crawl = [seed]
     crawled = []
-    index = []
+    index = {}
     while to_crawl:  # limits the max dept in a particular link to be crawled.
         # link = to_crawl.pop()  # Dept first algorithm
-        link = to_crawl[0]
-        to_crawl.remove(link)
-        if link not in crawled:
-            content = get_page(link)
-            add_page_to_index(index, link, content)
+        page = to_crawl[0]
+        to_crawl.remove(page)
+        if page not in crawled:
+            content = get_page(page)
+            add_page_to_index(index, page, content)
             union(to_crawl, get_all_links(content))  # To add links into next_dept w/o duplication
             # to_crawl = union(to_crawl, new_links)
-            crawled.append(link)
+            crawled.append(page)
     return index
 
 
@@ -75,21 +75,15 @@ def record_user_click(index, keyword, url):
                 entry[1] += 1
 
 
-def add_to_index(index, keyword, url):
+def add_to_index(index, keyword, url):  # Inverted index algorithm
     """
 
-    :type index: list
+    :type index: Dictionary
     """
-    for entry in index:
-        # format of index : [[keyword, [[url, count], [url, count],...]],...]
-        if entry[0] == keyword:
-            for element in entry[1]:
-                if element[0] == url:
-                    return
-            entry[1].append([url,0])
-            return
-    # not found, add new keyword to index
-    index.append([keyword, [url,0]])
+    if keyword in index:  # format of index : {[keyword, [[url, count], [url, count],...]],...}
+        index[keyword].append([url, 0])   # todo: Add number of hits by [url, 0] format.
+    else:  # not found, add new keyword to index
+        index[keyword] = [url, 0]
 
 
 # to update in index with all the word occurrences found in page
@@ -113,10 +107,14 @@ def add_page_to_index(index, url, content):
 
 
 def lookup(index, keyword):
-    for entry in index:
-        if entry[0] == keyword:
-            return entry[1]
-    return []
+    """
+
+    :rtype : Dictionary
+    """
+    if keyword in index:
+        return index[keyword]
+    else:
+        return None
 
 
 print crawl_web("https://www.udacity.com/cs101x/index.html")
